@@ -41,7 +41,7 @@
         body.dark-mode .form-control, body.dark-mode .search-input { background-color: var(--c-slate-50); border-color: var(--c-slate-200); }
         body.dark-mode .form-control:focus, body.dark-mode .search-input:focus { background-color: var(--c-white); }
         
-        .card, .sidebar, .modal-box, .form-control, .search-input, .btn, .data-table th, .data-table td, .role-select { transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed); }
+        .card, .sidebar, .modal-box, .form-control, .search-input, .btn, .data-table th, .data-table td { transition: background-color var(--transition-speed), border-color var(--transition-speed), color var(--transition-speed); }
 
         .floating-theme-btn { position: fixed; bottom: 2rem; right: 2.5rem; background-color: var(--c-blue-900); color: var(--c-white); border: none; border-radius: 50%; width: 3.5rem; height: 3.5rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); cursor: pointer; z-index: 100; transition: var(--transition-speed), transform 0.2s; }
         .floating-theme-btn:hover { transform: scale(1.1); background-color: var(--c-blue-950); }
@@ -50,14 +50,11 @@
         .text-center { text-align: center; } .text-right { text-align: right; }
         .flex { display: flex; } .items-center { align-items: center; } .justify-between { justify-content: space-between; } .w-full { width: 100%; }
         
-        /* === STYLING LAYAR LOGIN (BARU) === */
         .login-overlay { position: fixed; inset: 0; background-color: var(--c-navy); z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 1rem; }
         .login-card { background-color: var(--c-white); padding: 2.5rem; border-radius: 1rem; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid var(--c-slate-200); }
         
-        /* Layout Pembungkus Utama */
         .app-container { display: flex; min-height: 100vh; }
         
-        /* Sidebar & Menu */
         .sidebar { width: 280px; background-color: var(--c-navy); position: fixed; height: 100vh; z-index: 10; display: flex; flex-direction: column; color: var(--c-slate-300); }
         .sidebar-header { padding: 2rem; }
         .logo-box { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 2.5rem; }
@@ -72,11 +69,8 @@
         .sidebar-footer { margin-top: auto; padding: 1.5rem; border-top: 1px solid var(--c-slate-800); background-color: rgba(15, 23, 42, 0.5); display: flex; align-items: center; gap: 0.75rem; }
         .avatar { width: 2.5rem; height: 2.5rem; border-radius: 50%; background-color: var(--c-blue-900); display: flex; align-items: center; justify-content: center; font-weight: 700; color: var(--c-amber-400); font-size: 0.875rem; border: 1px solid #1e40af; flex-shrink: 0; }
         .profile-info { flex: 1; display: flex; flex-direction: column; gap: 0.25rem; }
-        .role-select { background-color: transparent; border: 1px solid var(--c-slate-600); color: var(--c-white); font-weight: 700; font-size: 0.875rem; padding: 2px 4px; border-radius: 4px; outline: none; cursor: pointer; }
-        .role-select option { color: var(--c-slate-800); background-color: var(--c-white); }
         .profile-info p { font-size: 0.75rem; color: var(--c-slate-400); display: flex; align-items: center; justify-content: space-between; gap: 0.25rem; }
         
-        /* Main Content */
         .main-content { margin-left: 280px; padding: 2.5rem; flex: 1; width: calc(100% - 280px); }
         .page-header { border-bottom: 1px solid var(--c-slate-200); padding-bottom: 1.25rem; margin-bottom: 1.5rem; }
         .header-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; }
@@ -137,7 +131,6 @@
         hr { border: 0; border-top: 1px solid var(--c-slate-200); margin: 1.5rem 0; }
         .max-w-5xl { max-width: 64rem; margin: 0 auto; } .mt-4 { margin-top: 1rem; } .mt-6 { margin-top: 1.5rem; }
         
-        /* Print Styles disingkat untuk menghemat ruang, menggunakan style bawaan Anda sebelumnya */
         @media print {
             .sidebar, .login-overlay, .floating-theme-btn, .header-actions, .btn, .btn-icon, .btn-remove, .search-box, .print-hide { display: none !important; }
             .app-container { display: block !important; } .main-content { margin-left: 0 !important; width: 100% !important; padding: 0 !important; }
@@ -192,10 +185,7 @@
         <div class="sidebar-footer">
             <div class="avatar" id="user-avatar">QA</div>
             <div class="profile-info">
-                <select id="user-role" class="role-select" onchange="applyAccessControl()">
-                    <option value="formulator">R&D Formulator</option>
-                    <option value="analis">Analis Lab</option>
-                </select>
+                <div id="user-role" style="color: var(--c-white); font-weight: 700; font-size: 0.875rem;">MEMUAT...</div>
                 <p>
                     <span style="display:flex; align-items:center; gap:4px;">
                         <span class="status-dot" style="width: 6px; height: 6px; border-radius: 50%; background-color: var(--c-emerald-700); display:inline-block;"></span> Online
@@ -393,22 +383,23 @@
     </div>
 </div>
 
-<button onclick="toggleTheme()" class="floating-theme-btn" title="Ganti Tema">TEMA</button>
+<button onclick="toggleTheme()" class="floating-theme-btn" title="Ganti Tema">
+    <svg id="icon-sun" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
+    <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+</button>
 
 <script>
-    // Inisialisasi data kosong, akan diisi oleh Firebase
     window.projectsData = []; 
-    let currentRole = 'formulator'; 
+    window.currentRole = 'analis'; 
 
-    function applyAccessControl() {
-        currentRole = document.getElementById('user-role').value;
+    window.applyAccessControl = function() {
         const btnAdd = document.getElementById('btn-add-project');
-        if (currentRole === 'formulator') {
+        if (window.currentRole === 'formulator') {
             btnAdd.classList.remove('hidden');
         } else {
             btnAdd.classList.add('hidden');
         }
-    }
+    };
 
     function switchTab(tabId) {
         document.getElementById('projects-section').classList.add('hidden');
@@ -427,8 +418,8 @@
         if (tabId === 'finished') renderFinished();
     }
 
-    function renderProjects(dataToRender = null) {
-        let data = dataToRender || window.projectsData.filter(p => p.status !== 'Finished');
+    function renderProjects() {
+        let data = window.projectsData.filter(p => p.status !== 'Finished');
         const body = document.getElementById('projects-table-body');
         
         if (data.length === 0) {
@@ -448,9 +439,10 @@
             </tr>`;
         }).join('');
     }
+    window.renderProjects = renderProjects;
 
-    function renderFinished(dataToRender = null) {
-        let data = dataToRender || window.projectsData.filter(p => p.status === 'Finished');
+    function renderFinished() {
+        let data = window.projectsData.filter(p => p.status === 'Finished');
         const body = document.getElementById('finished-table-body');
         
         if (data.length === 0) {
@@ -469,12 +461,14 @@
             </tr>`;
         }).join('');
     }
+    window.renderFinished = renderFinished;
 
     function goToFormula(code) {
         document.getElementById('lookup-code').value = code;
         switchTab('formula');
         lookupFormula();
     }
+    window.goToFormula = goToFormula;
 
     function lookupFormula() {
         const code = document.getElementById('lookup-code').value.toUpperCase();
@@ -492,19 +486,17 @@
             
             const statusSelect = document.getElementById('res-status');
             statusSelect.value = project.status || 'On Progress';
-            statusSelect.disabled = (currentRole === 'analis'); 
+            statusSelect.disabled = (window.currentRole === 'analis'); 
 
-            // Prosedur
             const procBody = document.getElementById('lab-prosedur-body');
             procBody.innerHTML = (project.prosedur || []).map((p, idx) => `
                 <tr class="detail-proc-row">
                     <td class="text-center font-bold" style="vertical-align: top;">${idx + 1}</td>
-                    <td style="vertical-align: top;"><textarea class="form-control proc-text" ${currentRole === 'analis' ? 'readonly' : ''}>${p.text}</textarea></td>
+                    <td style="vertical-align: top;"><textarea class="form-control proc-text" ${window.currentRole === 'analis' ? 'readonly' : ''}>${p.text}</textarea></td>
                     <td style="vertical-align: top;"><textarea class="form-control proc-note">${p.note}</textarea></td>
                 </tr>
             `).join('');
             
-            // Hasil Uji
             const hasil = project.hasilUji || {};
             document.getElementById('uji-ph').value = hasil.ph || '';
             document.getElementById('uji-viskositas').value = hasil.viskositas || '';
@@ -512,15 +504,12 @@
             document.getElementById('uji-busa-akhir').value = hasil.busaAkhir || '';
             document.getElementById('uji-catatan').value = hasil.catatan || '';
             
-            // Jika ada info analis dari Cloud
             if(hasil.analis) document.getElementById('nama-analis').value = hasil.analis;
 
-            // Formulasi
             const tbody = document.getElementById('formula-table-body');
             const formulaData = project.formula || [];
             tbody.innerHTML = formulaData.map((item, idx) => {
-                const mass = item.pct; // Asumsi batch 100g
-                // Ambil aktual dari array jika ada tersimpan di cloud, jika tidak kosongkan
+                const mass = item.pct; 
                 const aktualVal = (project.aktual && project.aktual[idx]) ? project.aktual[idx] : '';
                 return `
                     <tr>
@@ -528,7 +517,7 @@
                         <td style="font-weight: 600;">${item.name}</td>
                         <td class="text-center calc-pct" style="font-weight: 700;">${parseFloat(item.pct).toFixed(2)}%</td>
                         <td class="text-right">
-                            <input type="number" step="0.01" class="form-control theo-mass-input" style="text-align: right;" value="${parseFloat(mass).toFixed(2)}" ${currentRole === 'analis' ? 'disabled' : ''} oninput="updateFormulaFromMass()">
+                            <input type="number" step="0.01" class="form-control theo-mass-input" style="text-align: right;" value="${parseFloat(mass).toFixed(2)}" ${window.currentRole === 'analis' ? 'disabled' : ''} oninput="updateFormulaFromMass()">
                         </td>
                         <td>
                             <input type="number" step="0.01" class="form-control aktual-input" style="text-align: right; color: var(--c-blue-900);" placeholder="0.00" value="${aktualVal}" oninput="updateTotalAktual()">
@@ -541,6 +530,7 @@
             updateTotalAktual();
         }
     }
+    window.lookupFormula = lookupFormula;
 
     function updateFormulaFromMass() {
         const massInputs = document.querySelectorAll('.theo-mass-input');
@@ -559,6 +549,7 @@
         document.getElementById('total-theo-mass').innerText = totalMass.toFixed(2) + ' g';
         document.getElementById('total-pct').innerText = totalPct.toFixed(2) + '%';
     }
+    window.updateFormulaFromMass = updateFormulaFromMass;
 
     function updateTotalAktual() {
         const inputs = document.querySelectorAll('.aktual-input');
@@ -566,18 +557,24 @@
         inputs.forEach(input => total += parseFloat(input.value) || 0);
         document.getElementById('total-actual').innerText = total.toFixed(2) + " g";
     }
+    window.updateTotalAktual = updateTotalAktual;
 
-    // Fungsi UI Modal
     function openAddModal() {
         document.getElementById('addProjectModal').classList.remove('hidden');
         document.getElementById('formula-builder').innerHTML = '';
         document.getElementById('new-prosedur-builder').innerHTML = '';
         document.getElementById('new-kode').value = '';
         document.getElementById('new-nama').value = '';
+        document.getElementById('new-poin').value = '';
+        document.getElementById('new-target').value = '';
         addIngredientRow();
         addNewProcedureRow();
     }
-    function closeAddModal() { document.getElementById('addProjectModal').classList.add('hidden'); }
+    
+    function closeAddModal() { 
+        document.getElementById('addProjectModal').classList.add('hidden'); 
+    }
+    window.closeAddModal = closeAddModal;
 
     function addIngredientRow() {
         const builder = document.getElementById('formula-builder');
@@ -586,6 +583,7 @@
         row.innerHTML = `<input type="text" placeholder="KODE" class="form-control f-code"><input type="text" placeholder="Nama Bahan" class="form-control f-name"><input type="number" placeholder="%" class="form-control f-pct">`;
         builder.appendChild(row);
     }
+    
     function addNewProcedureRow() {
         const builder = document.getElementById('new-prosedur-builder');
         const div = document.createElement('div');
@@ -594,7 +592,12 @@
         builder.appendChild(div);
     }
     
-    function toggleTheme() { document.body.classList.toggle('dark-mode'); }
+    function toggleTheme() { 
+        document.body.classList.toggle('dark-mode'); 
+        const isDark = document.body.classList.contains('dark-mode');
+        document.getElementById('icon-moon').classList.toggle('hidden', isDark);
+        document.getElementById('icon-sun').classList.toggle('hidden', !isDark);
+    }
 </script>
 
 <script type="module">
@@ -602,8 +605,6 @@
     import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
     import { getDatabase, ref, set, onValue, push, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-    // 1. KONFIGURASI FIREBASE ANDA
-    // Wajib diganti dengan config dari project Firebase Console Anda
     const firebaseConfig = {
         apiKey: "AIzaSyBzuijdW5pQVJtF-ji8U16rP5gTk3fTy60",
         authDomain: "lab-aqb-research.firebaseapp.com",
@@ -611,7 +612,7 @@
         storageBucket: "lab-aqb-research.firebasestorage.app",
         messagingSenderId: "638683900637",
         appId: "1:638683900637:web:99187387e936f20c004934",
-     measurementId: "G-7V5KPHR497"
+        measurementId: "G-7V5KPHR497"
     };
 
     const app = initializeApp(firebaseConfig);
@@ -619,7 +620,6 @@
     const db = getDatabase(app);
     const projectsRef = ref(db, 'projects');
 
-    // 2. DAFTAR EMAIL WHITELIST LAB ANDA
     const allowedEmails = [
         "admin.aqb@gmail.com",
         "formulator1@lab.com",
@@ -627,7 +627,14 @@
         "zaidanprogram@gmail.com"
     ];
 
-    // 3. LISTENER AUTHENTICATION
+    // PEMETAAN ROLE OTOMATIS (Tanpa Selector)
+    const roleMap = {
+        "admin.aqb@gmail.com": "formulator",
+        "formulator1@lab.com": "formulator",
+        "zaidanprogram@gmail.com": "formulator",
+        "analis_utama@lab.com": "analis"
+    };
+
     onAuthStateChanged(auth, (user) => {
         const loginScreen = document.getElementById('login-screen');
         const mainApp = document.getElementById('main-app');
@@ -637,6 +644,12 @@
                 loginScreen.classList.add('hidden');
                 mainApp.classList.remove('hidden');
                 document.getElementById('user-avatar').innerText = user.email.substring(0,2).toUpperCase();
+                
+                // Set dan kunci Role Otomatis
+                window.currentRole = roleMap[user.email] || 'analis';
+                document.getElementById('user-role').innerText = window.currentRole === 'formulator' ? 'R&D FORMULATOR' : 'ANALIS LAB';
+                window.applyAccessControl();
+
             } else {
                 alert("Akses ditolak. Email tidak terdaftar dalam tim riset AQB.");
                 signOut(auth);
@@ -647,7 +660,6 @@
         }
     });
 
-    // 4. LOGIKA LOGIN & LOGOUT EXPOSED TO WINDOW
     window.loginLab = function() {
         const email = document.getElementById('login-email').value;
         const pass = document.getElementById('login-password').value;
@@ -667,69 +679,85 @@
         });
     };
 
-    // 5. LISTENER REALTIME DATABASE
     onValue(projectsRef, (snapshot) => {
         const data = snapshot.val();
         const projectsArray = [];
         for (let id in data) {
             projectsArray.push({ id, ...data[id] });
         }
-        // Balik urutan agar data terbaru ada di atas
         window.projectsData = projectsArray.reverse(); 
         
-        // Panggil fungsi render UI bawaan
-        renderProjects();
-        renderFinished();
+        window.renderProjects();
+        window.renderFinished();
         
-        // Jika sedang buka detail formulasi, refresh layarnya agar live
         const currentCode = document.getElementById('res-code').innerText;
         if (currentCode) {
             const tempVal = document.getElementById('lookup-code').value;
             document.getElementById('lookup-code').value = currentCode;
-            lookupFormula(); 
+            window.lookupFormula(); 
             document.getElementById('lookup-code').value = tempVal;
         }
     });
 
-    // 6. FUNGSI SIMPAN KE CLOUD
+    // REVISI FINAL FUNGSI SIMPAN (ANTI MACET & LANGSUNG TAMPIL)
     window.saveNewProject = function() {
         const kode = document.getElementById('new-kode').value.toUpperCase();
         const nama = document.getElementById('new-nama').value;
         if(!kode || !nama) return alert('Kode dan Nama Riset wajib diisi!');
 
-        // Kumpulkan formula
         const fRows = document.querySelectorAll('.formula-row');
         const formula = [];
         fRows.forEach(row => {
-            const c = row.querySelector('.f-code').value.toUpperCase();
-            const n = row.querySelector('.f-name').value;
-            const p = parseFloat(row.querySelector('.f-pct').value) || 0;
-            if(c && n && p > 0) formula.push({ code: c, name: n, pct: p });
+            const fCode = row.querySelector('.f-code');
+            const fName = row.querySelector('.f-name');
+            const fPct = row.querySelector('.f-pct');
+            if (fCode && fName && fPct) {
+                const c = fCode.value.trim().toUpperCase();
+                const n = fName.value.trim();
+                const p = parseFloat(fPct.value) || 0;
+                if(c || n || p > 0) formula.push({ code: c || '-', name: n || '-', pct: p });
+            }
         });
 
-        // Kumpulkan prosedur
         const pRows = document.querySelectorAll('.new-proc-row');
         const prosedur = [];
         pRows.forEach(row => {
-            const text = row.querySelector('.p-text').value;
-            const note = row.querySelector('.p-note').value;
-            if(text.trim() || note.trim()) prosedur.push({ text, note });
+            const pText = row.querySelector('.p-text');
+            const pNote = row.querySelector('.p-note');
+            if (pText && pNote) {
+                const text = pText.value.trim();
+                const note = pNote.value.trim();
+                if(text || note) prosedur.push({ text, note });
+            }
         });
 
         const newProject = {
-            kode, nama,
+            kode: kode, 
+            nama: nama,
             poinRiset: document.getElementById('new-poin').value || '-',
             target: document.getElementById('new-target').value || '-',
             status: 'On Progress',
-            formula: formula,
-            prosedur: prosedur,
+            // Perlindungan dari array kosong agar tidak ditolak oleh Firebase
+            formula: formula.length > 0 ? formula : [{code: '-', name: 'Belum diisi', pct: 0}],
+            prosedur: prosedur.length > 0 ? prosedur : [{text: 'Belum diisi', note: ''}],
             hasilUji: { ph: '', viskositas: '', busaAwal: '', busaAkhir: '', catatan: '' },
             timestamp: Date.now()
         };
 
+        // Langsung tutup jendela Popup terlebih dahulu
+        window.closeAddModal();
+
+        // 1. Tambahkan data ke dalam tabel secara langsung (sehingga langsung bisa diedit)
+        const localId = 'local_' + Date.now();
+        window.projectsData.unshift({ id: localId, ...newProject });
+        window.renderProjects();
+
+        // 2. Kemudian coba kirim ke Firebase di latar belakang
         push(projectsRef, newProject).then(() => {
-            closeAddModal();
-            alert('Protokol Riset berhasil disimpan ke Cloud!');
+            alert('Protokol Riset baru berhasil terekam ke Cloud & Daftar Riset!');
+        }).catch((error) => {
+            console.error(error);
+            alert("Riset disimpan secara Lokal, namun gagal diunggah ke Cloud. Peringatan sistem: " + error.message);
         });
     };
 
@@ -742,8 +770,7 @@
         if (project) {
             const updates = {};
             
-            // Simpan Hasil Uji
-            updates[`/projects/${project.id}/hasilUji`] = {
+            const newHasil = {
                 ph: document.getElementById('uji-ph').value,
                 viskositas: document.getElementById('uji-viskositas').value,
                 busaAwal: document.getElementById('uji-busa-awal').value,
@@ -752,14 +779,13 @@
                 analis: analis,
                 lastUpdated: Date.now()
             };
+            updates[`/projects/${project.id}/hasilUji`] = newHasil;
 
-            // Simpan Massa Aktual Array
             const aktualInputs = document.querySelectorAll('.aktual-input');
             const aktualData = [];
             aktualInputs.forEach(input => aktualData.push(parseFloat(input.value) || 0));
             updates[`/projects/${project.id}/aktual`] = aktualData;
 
-            // Simpan perubahan prosedur detail
             const procRows = document.querySelectorAll('.detail-proc-row');
             const updatedProsedur = [];
             procRows.forEach(row => {
@@ -769,20 +795,32 @@
             });
             updates[`/projects/${project.id}/prosedur`] = updatedProsedur;
 
-            // Jika role formulator, izinkan ubah status dan persentase master formula
-            const role = document.getElementById('user-role').value;
-            if (role === 'formulator') {
+            if (window.currentRole === 'formulator') {
                 updates[`/projects/${project.id}/status`] = document.getElementById('res-status').value;
                 
                 const pctCells = document.querySelectorAll('.calc-pct');
-                project.formula.forEach((item, idx) => {
-                    const pctVal = parseFloat(pctCells[idx].innerText);
-                    updates[`/projects/${project.id}/formula/${idx}/pct`] = pctVal;
-                });
+                if (project.formula) {
+                    project.formula.forEach((item, idx) => {
+                        if (pctCells[idx]) {
+                            const pctVal = parseFloat(pctCells[idx].innerText);
+                            updates[`/projects/${project.id}/formula/${idx}/pct`] = pctVal;
+                        }
+                    });
+                }
             }
 
+            // Memastikan perubahan masuk langsung ke tabel lokal saat itu juga
+            project.hasilUji = newHasil;
+            project.aktual = aktualData;
+            project.prosedur = updatedProsedur;
+            if (window.currentRole === 'formulator') project.status = document.getElementById('res-status').value;
+            window.renderProjects();
+            window.renderFinished();
+
             update(ref(db), updates).then(() => {
-                alert("Sinkronisasi Cloud Berhasil! Perubahan direkam.");
+                alert("Sinkronisasi Berhasil! Data Aktual direkam.");
+            }).catch((error) => {
+                alert("Data direkam (Hanya Lokal). Kendala Cloud: " + error.message);
             });
         }
     };
