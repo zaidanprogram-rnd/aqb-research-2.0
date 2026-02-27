@@ -636,29 +636,56 @@
     };
 
     onAuthStateChanged(auth, (user) => {
-        const loginScreen = document.getElementById('login-screen');
-        const mainApp = document.getElementById('main-app');
+    const loginScreen = document.getElementById('login-screen');
+    const mainApp = document.getElementById('main-app');
 
-        if (user) {
-            if (allowedEmails.includes(user.email)) {
-                loginScreen.classList.add('hidden');
-                mainApp.classList.remove('hidden');
-                document.getElementById('user-avatar').innerText = user.email.substring(0,2).toUpperCase();
+    if (user) {
+        if (allowedEmails.includes(user.email)) {
+            loginScreen.classList.add('hidden');
+            mainApp.classList.remove('hidden');
+            document.getElementById('user-avatar').innerText = user.email.substring(0,2).toUpperCase();
+            
+            // Set dan kunci Role Otomatis
+            window.currentRole = roleMap[user.email] || 'analis';
+            document.getElementById('user-role').innerText = window.currentRole === 'formulator' ? 'R&D FORMULATOR' : 'ANALIS LAB';
+            window.applyAccessControl();
+
+            // ---> TAMBAHKAN KODE PEMBACA DATA DI SINI <---
+            // Mulai membaca database hanya JIKA user sudah terkonfirmasi login
+            onValue(projectsRef, (snapshot) => {
+                const data = snapshot.val();
+                const projectsArray = [];
                 
-                // Set dan kunci Role Otomatis
-                window.currentRole = roleMap[user.email] || 'analis';
-                document.getElementById('user-role').innerText = window.currentRole === 'formulator' ? 'R&D FORMULATOR' : 'ANALIS LAB';
-                window.applyAccessControl();
+                // Tambahkan pengecekan if(data) agar tidak error saat database masih kosong
+                if (data) {
+                    for (let id in data) {
+                        projectsArray.push({ id, ...data[id] });
+                    }
+                }
+                
+                window.projectsData = projectsArray.reverse(); 
+                window.renderProjects();
+                window.renderFinished();
+                
+                // Kembalikan tampilan ke detail formula jika sedang membukanya
+                const currentCode = document.getElementById('res-code').innerText;
+                if (currentCode) {
+                    const tempVal = document.getElementById('lookup-code').value;
+                    document.getElementById('lookup-code').value = currentCode;
+                    window.lookupFormula(); 
+                    document.getElementById('lookup-code').value = tempVal;
+                }
+            });
 
-            } else {
-                alert("Akses ditolak. Email tidak terdaftar dalam tim riset AQB.");
-                signOut(auth);
-            }
         } else {
-            loginScreen.classList.remove('hidden');
-            mainApp.classList.add('hidden');
+            alert("Akses ditolak. Email tidak terdaftar dalam tim riset AQB.");
+            signOut(auth);
         }
-    });
+    } else {
+        loginScreen.classList.remove('hidden');
+        mainApp.classList.add('hidden');
+    }
+});
 
     window.loginLab = function() {
         const email = document.getElementById('login-email').value;
@@ -678,26 +705,6 @@
             document.getElementById('login-password').value = '';
         });
     };
-
-    onValue(projectsRef, (snapshot) => {
-        const data = snapshot.val();
-        const projectsArray = [];
-        for (let id in data) {
-            projectsArray.push({ id, ...data[id] });
-        }
-        window.projectsData = projectsArray.reverse(); 
-        
-        window.renderProjects();
-        window.renderFinished();
-        
-        const currentCode = document.getElementById('res-code').innerText;
-        if (currentCode) {
-            const tempVal = document.getElementById('lookup-code').value;
-            document.getElementById('lookup-code').value = currentCode;
-            window.lookupFormula(); 
-            document.getElementById('lookup-code').value = tempVal;
-        }
-    });
 
     // REVISI FINAL FUNGSI SIMPAN (ANTI MACET & LANGSUNG TAMPIL)
     window.saveNewProject = function() {
